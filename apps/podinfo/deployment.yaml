@@ -32,7 +32,7 @@ spec:
               value: "GitOps로 배포된 podinfo!"
           readinessProbe:
             httpGet:
-              path: /readyz
+              path: /brokenz
               port: 9898
           livenessProbe:
             httpGet:
