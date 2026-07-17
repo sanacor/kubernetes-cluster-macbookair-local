@@ -27,3 +27,13 @@ releases:
       - values/argocd.yaml
     needs:
       - ingress-nginx/ingress-nginx
+
+  # ArgoCD Application 리소스들 (GitOps 앱 등록)
+  - name: argocd-apps
+    namespace: argocd
+    chart: argo/argocd-apps
+    version: 2.0.5
+    values:
+      - values/argocd-apps.yaml
+    needs:
+      - argocd/argocd

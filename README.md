@@ -7,6 +7,7 @@
 - **kind** 클러스터 `argocd-lab` (단일 노드, 호스트 80/443 포트 매핑)
 - **ingress-nginx** — helmfile로 관리
 - **ArgoCD** — helmfile로 관리 (argo-helm 차트)
+- **ArgoCD Application** — helmfile로 관리 (argocd-apps 차트)
 
 ```
 .
@@ -14,11 +15,10 @@
 ├── helmfile.yaml           # ingress-nginx + argocd 릴리스 정의
 ├── values/
 │   ├── ingress-nginx.yaml  # kind용 hostPort 설정
-│   └── argocd.yaml         # 로컬 학습용 ArgoCD 설정
-├── apps/
-│   └── demo/               # GitOps로 배포되는 데모 앱 (nginx)
-└── argocd/
-    └── demo-app.yaml       # ArgoCD Application (이 저장소의 apps/demo를 감시)
+│   ├── argocd.yaml         # 로컬 학습용 ArgoCD 설정
+│   └── argocd-apps.yaml    # ArgoCD Application 정의 (apps/demo를 감시)
+└── apps/
+    └── demo/               # GitOps로 배포되는 데모 앱 (nginx)
 ```
 
 ## 처음부터 다시 만들기
@@ -47,9 +47,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 main에 push하면 ArgoCD가 변경을 감지해 OutOfSync로 표시한다 (기본 폴링 주기 3분,
 UI에서 REFRESH를 누르면 즉시).
 
-```bash
-kubectl apply -f argocd/demo-app.yaml   # Application 등록 (최초 1회)
-```
+Application 등록/수정은 `values/argocd-apps.yaml`을 편집하고 `helmfile apply`.
 
 - 데모 앱: http://demo.localhost
 - sync 정책: **수동** — git 변경 후 UI의 SYNC 버튼(또는 `argocd app sync demo`)으로 반영
