@@ -10,6 +10,6 @@ releases:
     chart: ingress-nginx/ingress-nginx
     version: 4.15.1
     values:
-      - ../values/ingress-nginx.yaml
+      - values.yaml
     # 이후 단계(argocd의 Ingress 생성)가 admission webhook을 필요로 하므로 대기
     wait: true

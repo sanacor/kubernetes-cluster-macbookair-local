@@ -1,0 +1,23 @@
+# ArgoCD: 본체(부트스트랩) + Application 등록
+# 본체 설정 변경은 self-management로: values.yaml 수정 → push → UI에서 SYNC
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+releases:
+  - name: argocd
+    namespace: argocd
+    createNamespace: true
+    chart: argo/argo-cd
+    version: 10.1.4   # applications.yaml의 targetRevision과 맞출 것
+    values:
+      - values.yaml
+
+  - name: argocd-apps
+    namespace: argocd
+    chart: argo/argocd-apps
+    version: 2.0.5
+    values:
+      - applications.yaml
+    needs:
+      - argocd/argocd

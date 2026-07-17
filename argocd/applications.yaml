@@ -13,7 +13,7 @@ applications:
         helm:
           releaseName: argocd
           valueFiles:
-            - $values/values/argocd.yaml
+            - $values/argocd/values.yaml
       - repoURL: https://github.com/sanacor/kubernetes-cluster-macbookair-local.git
         targetRevision: main
         ref: values

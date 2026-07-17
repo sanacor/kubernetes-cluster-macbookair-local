@@ -1,9 +1,8 @@
-# 루트 helmfile — 컴포넌트별 helmfile을 순서대로 실행
+# 루트 helmfile — 주제별 helmfile을 순서대로 실행
 # 사용법:
 #   helmfile diff   # 적용 전 변경사항 미리보기
 #   helmfile apply  # 전체 설치/업그레이드
-#   helmfile -f helmfiles/apps.yaml apply   # 특정 컴포넌트만
+#   helmfile -f argocd/helmfile.yaml apply   # 특정 주제만
 helmfiles:
-  - path: helmfiles/ingress-nginx.yaml
-  - path: helmfiles/argocd.yaml
-  - path: helmfiles/apps.yaml
+  - path: services/nginx/helmfile.yaml
+  - path: argocd/helmfile.yaml
