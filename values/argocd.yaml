@@ -1,0 +1,21 @@
+# ArgoCD 로컬 학습용 설정
+global:
+  domain: argocd.localhost
+
+configs:
+  params:
+    # TLS 종료를 Ingress에 맡기지 않고 HTTP로 서빙 (로컬 학습용)
+    server.insecure: true
+
+server:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    # server.insecure=true라서 백엔드는 HTTP
+    tls: false
+
+# 로컬 학습에 불필요한 컴포넌트는 꺼서 메모리 절약 (Docker VM 4GB)
+dex:
+  enabled: false        # SSO 미사용 (admin 계정으로 로그인)
+notifications:
+  enabled: false        # 알림 미사용
