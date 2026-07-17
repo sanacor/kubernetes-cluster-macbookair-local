@@ -1,39 +1,9 @@
-# 로컬 kind 클러스터(argocd-lab)용 helmfile
+# 루트 helmfile — 컴포넌트별 helmfile을 순서대로 실행
 # 사용법:
 #   helmfile diff   # 적용 전 변경사항 미리보기
-#   helmfile apply  # 설치/업그레이드
-repositories:
-  - name: argo
-    url: https://argoproj.github.io/argo-helm
-  - name: ingress-nginx
-    url: https://kubernetes.github.io/ingress-nginx
-
-releases:
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    createNamespace: true
-    chart: ingress-nginx/ingress-nginx
-    version: 4.15.1
-    values:
-      - values/ingress-nginx.yaml
-    wait: true
-
-  - name: argocd
-    namespace: argocd
-    createNamespace: true
-    chart: argo/argo-cd
-    version: 10.1.4
-    values:
-      - values/argocd.yaml
-    needs:
-      - ingress-nginx/ingress-nginx
-
-  # ArgoCD Application 리소스들 (GitOps 앱 등록)
-  - name: argocd-apps
-    namespace: argocd
-    chart: argo/argocd-apps
-    version: 2.0.5
-    values:
-      - values/argocd-apps.yaml
-    needs:
-      - argocd/argocd
+#   helmfile apply  # 전체 설치/업그레이드
+#   helmfile -f helmfiles/apps.yaml apply   # 특정 컴포넌트만
+helmfiles:
+  - path: helmfiles/ingress-nginx.yaml
+  - path: helmfiles/argocd.yaml
+  - path: helmfiles/apps.yaml
