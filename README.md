@@ -17,8 +17,8 @@
 │   ├── helmfile.yaml           # argo-cd(부트스트랩) + argocd-apps 릴리스
 │   ├── values.yaml             # ArgoCD 설정 (self-management 소스)
 │   └── applications.yaml       # ArgoCD Application 정의
-├── services/
-│   └── nginx/                  # ingress-nginx
+├── infra/
+│   └── ingress-nginx/          # 클러스터 인프라: ingress 컨트롤러
 │       ├── helmfile.yaml
 │       └── values.yaml
 └── apps/

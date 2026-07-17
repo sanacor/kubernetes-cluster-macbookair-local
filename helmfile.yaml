@@ -4,5 +4,5 @@
 #   helmfile apply  # 전체 설치/업그레이드
 #   helmfile -f argocd/helmfile.yaml apply   # 특정 주제만
 helmfiles:
-  - path: services/nginx/helmfile.yaml
+  - path: infra/ingress-nginx/helmfile.yaml
   - path: argocd/helmfile.yaml
