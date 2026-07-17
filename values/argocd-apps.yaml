@@ -1,6 +1,30 @@
 # ArgoCD Application 정의 (argocd-apps 차트)
 # 여기에 앱을 추가/수정하고 `helmfile apply`로 반영
 applications:
+  # ArgoCD self-management: ArgoCD가 자기 자신의 설치(차트 + values)를 git 기준으로 관리
+  # helmfile의 argocd 릴리스는 최초 부트스트랩용. 이후 설정 변경은 values/argocd.yaml 수정 → push → SYNC
+  argocd:
+    namespace: argocd
+    project: default
+    sources:
+      - repoURL: https://argoproj.github.io/argo-helm
+        chart: argo-cd
+        targetRevision: 10.1.4   # helmfile.yaml의 argocd 릴리스 버전과 맞출 것
+        helm:
+          releaseName: argocd
+          valueFiles:
+            - $values/values/argocd.yaml
+      - repoURL: https://github.com/sanacor/kubernetes-cluster-macbookair-local.git
+        targetRevision: main
+        ref: values
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: argocd
+    syncPolicy:
+      syncOptions:
+        # argo-cd CRD가 커서 client-side apply의 annotation 크기 제한(256KB)에 걸림
+        - ServerSideApply=true
+
   demo:
     namespace: argocd
     project: default
