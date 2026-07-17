@@ -5,7 +5,12 @@ metadata:
   labels:
     app: podinfo
 spec:
-  replicas: 1
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # 교체 중 최대 4개(3+1)까지 허용
+      maxUnavailable: 0  # Ready 파드가 3개 밑으로 떨어지지 않게 보장
   selector:
     matchLabels:
       app: podinfo
