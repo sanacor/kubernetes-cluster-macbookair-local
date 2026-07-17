@@ -44,7 +44,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 ## GitOps 흐름
 
 이 저장소 자체가 ArgoCD의 소스 저장소다. `apps/demo/`의 매니페스트를 수정하고
-main에 push하면 ArgoCD가 감지해서 자동으로 클러스터에 반영한다 (기본 폴링 주기 3분,
+main에 push하면 ArgoCD가 변경을 감지해 OutOfSync로 표시한다 (기본 폴링 주기 3분,
 UI에서 REFRESH를 누르면 즉시).
 
 ```bash
@@ -52,9 +52,7 @@ kubectl apply -f argocd/demo-app.yaml   # Application 등록 (최초 1회)
 ```
 
 - 데모 앱: http://demo.localhost
-- sync 정책: automated + prune + selfHeal
-  - 클러스터를 수동으로 건드리면 git 상태로 되돌아감 (selfHeal)
-  - git에서 파일을 지우면 클러스터에서도 삭제됨 (prune)
+- sync 정책: **수동** — git 변경 후 UI의 SYNC 버튼(또는 `argocd app sync demo`)으로 반영
 
 ## 자주 쓰는 명령
 
