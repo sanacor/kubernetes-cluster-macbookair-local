@@ -14,5 +14,5 @@ controller:
   # 로컬 단일 노드라 리소스 절약
   resources:
     requests:
-      cpu: 50m
+      cpu: 70m
       memory: 90Mi
