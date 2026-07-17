@@ -22,7 +22,7 @@
 │       ├── helmfile.yaml
 │       └── values.yaml
 └── apps/
-    └── demo/                   # GitOps로 배포되는 데모 앱 (nginx)
+    └── podinfo/                # GitOps로 배포되는 데모 앱
 ```
 
 주제를 추가할 때는 `<주제>/helmfile.yaml` + `values.yaml`을 만들고 루트
@@ -51,14 +51,14 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 
 ## GitOps 흐름
 
-이 저장소 자체가 ArgoCD의 소스 저장소다. `apps/demo/`의 매니페스트를 수정하고
+이 저장소 자체가 ArgoCD의 소스 저장소다. `apps/podinfo/`의 매니페스트를 수정하고
 main에 push하면 ArgoCD가 변경을 감지해 OutOfSync로 표시한다 (기본 폴링 주기 3분,
 UI에서 REFRESH를 누르면 즉시).
 
-Application 등록/수정은 `values/argocd-apps.yaml`을 편집하고 `helmfile apply`.
+Application 등록/수정은 `argocd/applications.yaml`을 편집하고 `helmfile -f argocd/helmfile.yaml apply`.
 
-- 데모 앱: http://demo.localhost
-- sync 정책: **수동** — git 변경 후 UI의 SYNC 버튼(또는 `argocd app sync demo`)으로 반영
+- 데모 앱: http://podinfo.localhost
+- sync 정책: **수동** — git 변경 후 UI의 SYNC 버튼(또는 `argocd app sync podinfo`)으로 반영
 
 ## 자주 쓰는 명령
 

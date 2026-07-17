@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-nginx
+  name: podinfo
 spec:
   selector:
-    app: demo-nginx
+    app: podinfo
   ports:
     - port: 80
-      targetPort: 80
+      targetPort: 9898
