@@ -12,9 +12,13 @@
 .
 ├── kind-config.yaml        # kind 클러스터 정의
 ├── helmfile.yaml           # ingress-nginx + argocd 릴리스 정의
-└── values/
-    ├── ingress-nginx.yaml  # kind용 hostPort 설정
-    └── argocd.yaml         # 로컬 학습용 ArgoCD 설정
+├── values/
+│   ├── ingress-nginx.yaml  # kind용 hostPort 설정
+│   └── argocd.yaml         # 로컬 학습용 ArgoCD 설정
+├── apps/
+│   └── demo/               # GitOps로 배포되는 데모 앱 (nginx)
+└── argocd/
+    └── demo-app.yaml       # ArgoCD Application (이 저장소의 apps/demo를 감시)
 ```
 
 ## 처음부터 다시 만들기
@@ -36,6 +40,21 @@ kubectl -n argocd get secret argocd-initial-admin-secret \
 
 > 비밀번호를 바꾼 뒤에는 초기 시크릿을 삭제하는 것이 권장됨:
 > `kubectl -n argocd delete secret argocd-initial-admin-secret`
+
+## GitOps 흐름
+
+이 저장소 자체가 ArgoCD의 소스 저장소다. `apps/demo/`의 매니페스트를 수정하고
+main에 push하면 ArgoCD가 감지해서 자동으로 클러스터에 반영한다 (기본 폴링 주기 3분,
+UI에서 REFRESH를 누르면 즉시).
+
+```bash
+kubectl apply -f argocd/demo-app.yaml   # Application 등록 (최초 1회)
+```
+
+- 데모 앱: http://demo.localhost
+- sync 정책: automated + prune + selfHeal
+  - 클러스터를 수동으로 건드리면 git 상태로 되돌아감 (selfHeal)
+  - git에서 파일을 지우면 클러스터에서도 삭제됨 (prune)
 
 ## 자주 쓰는 명령
 
