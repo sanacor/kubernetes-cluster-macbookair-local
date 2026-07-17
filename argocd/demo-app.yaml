@@ -15,8 +15,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: demo
   syncPolicy:
-    automated:
-      prune: true      # git에서 삭제된 리소스는 클러스터에서도 삭제
-      selfHeal: true   # 클러스터를 수동으로 건드리면 git 상태로 되돌림
+    # 자동 sync 비활성화 — git 변경 후 UI의 SYNC 버튼(또는 argocd app sync demo)으로 수동 반영
     syncOptions:
       - CreateNamespace=true
