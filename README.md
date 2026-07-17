@@ -12,22 +12,22 @@
 ```
 .
 ├── kind-config.yaml            # kind 클러스터 정의
-├── helmfile.yaml               # 루트 — 하위 helmfile 실행 순서 정의
-├── helmfiles/
-│   ├── ingress-nginx.yaml      # 인프라: ingress
-│   ├── argocd.yaml             # ArgoCD 본체 (부트스트랩)
-│   └── apps.yaml               # ArgoCD Application 등록
-├── values/
-│   ├── ingress-nginx.yaml      # kind용 hostPort 설정
-│   ├── argocd.yaml             # ArgoCD 설정 (self-management 소스)
-│   └── argocd-apps.yaml        # ArgoCD Application 정의
+├── helmfile.yaml               # 루트 — 주제별 helmfile 실행 순서 정의
+├── argocd/
+│   ├── helmfile.yaml           # argo-cd(부트스트랩) + argocd-apps 릴리스
+│   ├── values.yaml             # ArgoCD 설정 (self-management 소스)
+│   └── applications.yaml       # ArgoCD Application 정의
+├── services/
+│   └── nginx/                  # ingress-nginx
+│       ├── helmfile.yaml
+│       └── values.yaml
 └── apps/
     └── demo/                   # GitOps로 배포되는 데모 앱 (nginx)
 ```
 
-컴포넌트를 추가할 때는 `helmfiles/<이름>.yaml`을 만들고 루트 `helmfile.yaml`의
-`helmfiles:` 목록에 추가한다 (목록 순서 = 실행 순서). 특정 컴포넌트만 적용하려면
-`helmfile -f helmfiles/apps.yaml apply`.
+주제를 추가할 때는 `<주제>/helmfile.yaml` + `values.yaml`을 만들고 루트
+`helmfile.yaml`의 `helmfiles:` 목록에 추가한다 (목록 순서 = 실행 순서).
+특정 주제만 적용하려면 `helmfile -f argocd/helmfile.yaml apply`.
 
 ## 처음부터 다시 만들기
 
